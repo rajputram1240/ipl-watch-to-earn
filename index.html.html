@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IPL Watch‑to‑Earn Calculator</title>
+<style>
+  :root{--bg:#0c0f14;--card:#131a22;--text:#e8f0ff;--muted:#9fb3c8;--blue:#1071ff;--green:#19e68c;--gold:#ffc247}
+  *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0c0f14;color:var(--text);
+  background:radial-gradient(1200px 600px at 80% 0%, #0f1a2a 0%, #0c0f14 55%),linear-gradient(180deg, #0c0f14, #0a0d12);}
+  .wrap{max-width:980px;margin:40px auto;padding:24px}
+  .title{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .badge{background:linear-gradient(135deg,#1a2a48,#111a29);border:1px solid #1f2f46;color:#cfe2ff;padding:6px 10px;border-radius:999px;font-size:12px;letter-spacing:.3px}
+  h1{font-weight:800;margin:0;font-size:28px;line-height:1.2}
+  .card{background:linear-gradient(180deg,#0e141c,#0b1118);border:1px solid #1a2738;border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .grid{display:grid;gap:16px}@media(min-width:860px){.grid{grid-template-columns:1.1fr .9fr}}
+  label{font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
+  input[type=number]{width:100%;padding:12px 12px;margin-top:6px;border-radius:12px;background:#0a1016;border:1px solid #1a2738;color:var(--text);font-size:16px}
+  .unit{color:#7fbef9;font-weight:600}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .out{display:grid;gap:10px;margin-top:6px}.pill{padding:12px 14px;border-radius:12px;background:#0a121b;border:1px solid #1b2a3e}
+  .pill strong{font-size:18px}.fx{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .fx small{color:var(--muted)}.money{color:var(--gold);font-weight:800}.permin{color:#19e68c;font-weight:700}
+  .cta{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+  button{cursor:pointer;border:1px solid #21406d;background:linear-gradient(180deg,#0f2a54,#0a1a30);color:#d9ecff;padding:10px 14px;border-radius:10px;font-weight:700}
+  button.ghost{background:#0b121a;border-color:#233044;color:#cfe2ff}
+  .subtle{font-size:12px;color:#8fa6be}.hr{height:1px;background:#1a2738;margin:16px 0}.note{font-size:12px;color:#9fb3c8}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}.chip{background:#0c1520;border:1px solid #1a2738;color:#b9d2f0;padding:6px 10px;border-radius:999px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title"><span class="badge">Bonus Tool</span><h1>IPL Watch‑to‑Earn Calculator</h1></div>
+  <div class="card grid">
+    <div>
+      <div class="row">
+        <div>
+          <label>Revenue per Match <span class="unit">(₹ Crore)</span></label>
+          <input id="revCr" type="number" value="80" step="0.1" min="1">
+          <div class="subtle">Tip: Set 65–95 Cr as per ballpark.</div>
+        </div>
+        <div>
+          <label>Share to Viewers <span class="unit">(%)</span></label>
+          <input id="sharePct" type="number" value="30" step="1" min="0" max="100">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Total Watch‑Minutes per Match <span class="unit">(Billion)</span></label>
+          <input id="watchB" type="number" value="11.5" step="0.1" min="0.1">
+          <div class="subtle">Season average: ~11–12 B mins/match.</div>
+        </div>
+        <div>
+          <label>Your Watch Time <span class="unit">(minutes)</span></label>
+          <input id="yourMin" type="number" value="60" step="1" min="0">
+        </div>
+      </div>
+      <div class="cta">
+        <button id="presetLow">Preset: 65 Cr • 11.0B</button>
+        <button id="presetMid">Preset: 80 Cr • 11.5B</button>
+        <button id="presetHigh">Preset: 95 Cr • 12.0B</button>
+        <button class="ghost" id="examples">Quick Examples (30/60/180)</button>
+      </div>
+      <div class="hr"></div>
+      <div class="out">
+        <div class="pill fx">
+          <small>Rupees per Minute (est.)</small><strong class="permin" id="rpm">₹0.00</strong>
+        </div>
+        <div class="pill fx">
+          <small>Your Estimated Payout</small><strong class="money" id="payout">₹0.00</strong>
+        </div>
+        <div class="pill"><div class="chips" id="examplesRow"></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="pill">
+        <div class="fx"><strong>Formula</strong><small>All values in rupees & minutes</small></div>
+        <div class="hr"></div>
+        <div class="note"><code>Payout = (Share% × Revenue/Match) ÷ (Total Watch‑Minutes/Match) × (Your Minutes)</code></div>
+        <div class="hr"></div>
+        <div class="note"><strong>Unit Converter:</strong><br>• <em>₹ Crore → ₹</em>: × <b>1,00,00,000</b><br>• <em>Billion minutes → minutes</em>: × <b>1,000,000,000</b></div>
+        <div class="hr"></div>
+        <div class="note">Disclaimer: Ye sirf illustrative estimate hai—actual payouts ad rates, sold inventory, language feeds, CTV vs mobile, aur platform policy par depend karte hain.</div>
+      </div>
+    </div>
+  </div>
+  <p class="subtle" style="margin-top:10px">Host this HTML on any static site (Drive, GitHub Pages, Netlify) and put the link in your YouTube description.</p>
+</div>
+<script>
+  const $=id=>document.getElementById(id);
+  function fmtMoney(n){return '₹'+n.toLocaleString('en-IN',{maximumFractionDigits:2});}
+  function fmtSmall(n){return '₹'+n.toLocaleString('en-IN',{maximumFractionDigits:4});}
+  function recompute(){
+    const rev = Number($('revCr').value||0) * 10000000;
+    const share = (Number($('sharePct').value||0)/100);
+    const totalMins = Number($('watchB').value||0) * 1000000000;
+    const mine = Number($('yourMin').value||0);
+    const rpm = (share*rev)/(totalMins||1);
+    const payout = rpm*mine;
+    $('rpm').textContent = fmtSmall(rpm);
+    $('payout').textContent = fmtMoney(payout);
+    // examples
+    const mins=[30,60,180];
+    const row=$('examplesRow'); row.innerHTML='';
+    mins.forEach(m=>{
+      const amt = rpm*m;
+      const span = document.createElement('span');
+      span.className='chip';
+      span.textContent = `${m} min → ₹${amt.toLocaleString('en-IN',{maximumFractionDigits:2})}`;
+      row.appendChild(span);
+    });
+  }
+  ['revCr','sharePct','watchB','yourMin'].forEach(id=>{
+    $(id).addEventListener('input',recompute);
+    $(id).addEventListener('change',recompute);
+  });
+  $('presetLow').onclick = ()=>{ $('revCr').value=65; $('watchB').value=11.0; recompute(); };
+  $('presetMid').onclick = ()=>{ $('revCr').value=80; $('watchB').value=11.5; recompute(); };
+  $('presetHigh').onclick = ()=>{ $('revCr').value=95; $('watchB').value=12.0; recompute(); };
+  $('examples').onclick = recompute;
+  recompute();
+</script>
+</body></html>
